@@ -52,7 +52,7 @@ Application have 2 different configuration files:
 ## Local Development 
 
 #### While running the applciation locally we need to generate a secret with the postgres password since that is the only thing that this application is trying to hide from the outside world.
-For local development do:
+For local development do (first time only):
 
     kubectl create secret generic pgpassword --from-literal PGPASSWORD=123456
 
@@ -77,6 +77,26 @@ For local development do:
     http://localhost
     (Since the default port is 80 we dont need to specify one. But speificying one will also work http://localhost:80)
 
-
+### As for now there are 3 replicas for the client-deployment.yml and server-deployment.yml
+We can reduce the number of replicas by going inside those file changing them and then do a kubectl apply -f file.yml or
+we can also reduce/scale it with the imperative commands:
+```
+    kubectl scale --replicas=1 -f client-deployment.yml
+```
+By accessing the:
+```
+    kubectl get deployments
+```
+we can see that the desired number of replicas is 1 in the client-deployment. 
+### To stop all the kubernetes object running in our local development we do 
+```
+    kubectl delete -f .\k8s\
+```
+and make sure that no Pod/Service object are runing by doing :
+```
+    kubectl get pods
+    kubectl get services
+```
+ 
 ### Accessing Kubernetes Dashboard Locally
 To access the kubernetes dashboard make sure to follow the [the documentation in this file](k8s/dashboard/kubernetes-dashboard.md)
