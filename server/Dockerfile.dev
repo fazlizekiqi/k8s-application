@@ -1,0 +1,15 @@
+FROM node:14.14.0-alpine
+
+WORKDIR /app
+
+COPY ./package.json ./
+
+RUN npm config set noproxy .sebank.se
+RUN npm config set registry https://repo7.sebank.se/artifactory/api/npm/seb-npm
+RUN npm config set https-proxy http://gia.sebank.se:8080
+
+RUN npm install --loglevel verbose
+
+COPY . .
+
+CMD ["npm", "run", "dev"]
