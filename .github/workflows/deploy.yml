@@ -18,9 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-#      - name: Test
-#        run: |-
-#          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Test
+        run: |-
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
 #          docker build -t fazlizekiqi/react-test -f ./client/Dockerfile.dev ./client
 #          docker run -e CI=true fazlizekiqi/react-test npm test
 
