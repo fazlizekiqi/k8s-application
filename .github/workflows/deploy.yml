@@ -63,7 +63,7 @@ jobs:
 
       - name: Apply
         run: |-
-          kubectl apply -f k8s
+          kubectl apply -f k8s-prod
           kubectl set image deployments/server-deployment server=fazlizekiqi/multi-server-k8s-pgfix-gh:${{ env.SHA }}
           kubectl set image deployments/client-deployment client=fazlizekiqi/multi-client-k8s-gh:${{ env.SHA }}
           kubectl set image deployments/worker-deployment worker=fazlizekiqi/multi-worker-k8s-gh:${{ env.SHA }}

@@ -72,7 +72,7 @@ For local development do (first time only):
 ### Now run the application with the below commands:
 
     cd k8s-application
-    kubectl apply -f k8s
+    kubectl apply -f k8s-dev
 
 ### Open browser and visit 
     http://localhost
@@ -91,7 +91,7 @@ By accessing the:
 we can see that the desired number of replicas is 1 in the client-deployment. 
 ### To stop all the kubernetes object running in our local development we do 
 ```
-    kubectl delete -f .\k8s\
+    kubectl delete -f .\k8s-dev\
 ```
 and make sure that no Pod/Service object are runing by doing :
 ```
@@ -100,7 +100,7 @@ and make sure that no Pod/Service object are runing by doing :
 ```
  
 ### Accessing Kubernetes Dashboard Locally
-To access the kubernetes dashboard make sure to follow the [the documentation in this file](k8s/dashboard/kubernetes-dashboard.md)
+To access the kubernetes dashboard make sure to follow the [the documentation in this file](k8s-dev/dashboard/kubernetes-dashboard.md)
 
 ### Production
 At this point we need to go in the [Google Cloud Platform](https://console.cloud.google.com/) create a project and inside of that project we need to create kubernetes clusters.

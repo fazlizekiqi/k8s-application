@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Need to be mapped from the container/Pod that is going to use this.(In our case this is going to be specified in the postgres-deployment.yml)
+  name: database-persistent-volume-claim
+spec:
+  accessModes:
+    # ReadWriteOnce - Can be used by a single node
+    # ReadOnlyMany - Multiple nodes can read from this
+    # ReadWriteMany - Can be read and written to by many nodes.
+    - ReadWriteOnce
+  resources:
+    requests:
+      # The size that we want to have it available. (Since this is a simple application 1Gi will be sufficient).
+      storage: 1Gi
