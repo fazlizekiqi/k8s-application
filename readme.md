@@ -43,27 +43,28 @@ This project makes use of [Ingress-Nginx](https://github.com/kubernetes/ingress-
 [Read more about the difference of them](https://grigorkh.medium.com/there-are-two-nginx-ingress-controllers-for-k8s-what-44c7b548e678)
 
 **NOTE!**
-Setup of ingress-nginx changes depending on the environment(i.e configuration files changes depending on which cloud provider we are deploying to).
+Setup of ingress-nginx changes depending on the environment.
+**In the local development we can simply apply one kubernetes config file and then run the application**
 
-Application have 2 different configuration files:
+Application will use the same configuration file _ingres-service.yml_ for routing the traffic to our services in both environments:
  - For local development purposes
  - Google Cloud 
 
+**NOTE! Only the ingress-nginx installation process can vary on different platforms.**
+
 ## Local Development 
 
-#### While running the applciation locally we need to generate a secret with the postgres password since that is the only thing that this application is trying to hide from the outside world.
+#### While running the application locally we need to generate a secret with the postgres password since that is the only thing that this application is trying to hide from the outside world.
 For local development do (first time only):
 
-    kubectl create secret generic pgpassword --from-literal PGPASSWORD=123456
+    kubectl create secret generic pgpassword --from-literal MYPGPASSWORD=123456
 
  - The 'pgpassword' will be used in the server-deployment(k8s/server-deployment.yml). That's why we need to generate the key first.
  - The same secret object will also be used in the (k8s/postgres-deployment.yml) in order to override the default password of Postgresql.
  It is recommended that we use env variables like this all the data that we think should not be exploited.
 
 #### Setting up Ingress Controller Locally
- 
- - **Make sure to remove the ingress.yml file if the command below is working for you..**
-
+ We can do the installation process with Helm or we can simply apply a kubernetes object with the below command: 
 [More on installation guide for Nginx Ingress Controller](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start)
 
     kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.4.0/deploy/static/provider/cloud/deploy.yaml
@@ -132,7 +133,7 @@ Getting the credentials for the cluster that you create:
 ```
 And now, after the configuration of gcloud inside of the google cloud environment we can create our secret by hitting the command:
 ```
-     kubectl create secret generic pgpassword --from-literal PGPASSWORD=<your-secret-postgres-password>
+     kubectl create secret generic pgpassword --from-literal MYPGPASSWORD=<your-secret-postgres-password>
 ```
 
 
