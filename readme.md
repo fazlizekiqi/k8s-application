@@ -203,3 +203,6 @@ Then we install the Ingress-controller:
     --set installCRDs=true
 ```
 This will download a couple of files and install them inside of our Kubernetes cluster as a couple of different new objects.
+We also need 2 different config files 
+ - One for the Issuer (issuer.yml)
+ - One for the Certificate (certificate.yml)
