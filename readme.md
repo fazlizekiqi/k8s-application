@@ -156,3 +156,50 @@ Then we install the Ingress-controller:
     helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
     helm install my-release ingress-nginx/ingress-nginx
 ```
+
+### Setting up a Domain (note! this will cost ~10$)
+
+1. Domain Purchase 
+ - Go to [Google Domains](http://domains.google.com/)
+ - Search for a Domain and add it to the cart.
+ - If you want yearly renew of this domain keep the **Auto-renew is on**  otherwise disable it.
+ - Checkout
+ - (You might need to add some extra personal information together with the credit card information after you checkout. Just fill in the info.)
+
+2. Setup the domain
+ - Go inside your kubernetes services in the google cloud. -> Kubernetes Engine -> Services & Ingress
+ - Find the ingress-controller services and copy the IP address that is under the "Endpoints" column(the one that we can access to visit our website). 
+ - Go back to the domains.google.com and find your domain 
+ - Click on the DNS on the left side
+ - In the Custom records section we are going to create 2 different records
+ - One is for the your-domain.com and the other is for www.your-domain.com
+ - For the your-domain.com add:
+    1. Hostname: (leave empty)
+    2. Type: A
+    3. TTL: 3600 (TTL — (Time-To-Live) How often a copy of the record stored in cache (local storage) must be updated (fetched from original storage) or discarded. Shorter TTLs mean records are fetched more often (access is slower, data is more current). Longer TTLs mean records are fetched from less often (access is faster, data is less current). The default value is 1 hour.)
+    4.  Paste the IP addressed that you copied from the Services & Ingress in the google cloud platform. Make sure to remove the / and the http://. It should look something like this _35.228.187.128_
+ - For the www.your-domain.com add a nother custom record:
+    1. Hostname: www
+    2. Type: CNAME
+    3. TTL: 3600 
+    4. your-domain.com 
+### Adding the certificate in the project:
+ - Access the google cloud shell:
+ - Add the Jetstack Helm repository
+```
+    helm repo add jetstack https://charts.jetstack.io
+```
+ - Update your local Helm chart repository cache:
+```
+   helm repo update
+```
+ - Install the cert-manager Helm chart:
+```
+    helm install \
+    cert-manager jetstack/cert-manager \
+    --namespace cert-manager \
+    --create-namespace \
+    --version v1.8.0 \
+    --set installCRDs=true
+```
+This will download a couple of files and install them inside of our Kubernetes cluster as a couple of different new objects.

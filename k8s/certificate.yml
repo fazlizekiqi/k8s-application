@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+metadata:
+  name: multik8sfzekiqi-com-tls
+spec:
+  secretName: multik8sfzekiqi-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: multik8sfzekiqi.com
+  dnsNames:
+    - multik8sfzekiqi.com
+    - www.multik8sfzekiqi.com
