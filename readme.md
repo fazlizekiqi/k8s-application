@@ -46,11 +46,9 @@ This project makes use of [Ingress-Nginx](https://github.com/kubernetes/ingress-
 Setup of ingress-nginx changes depending on the environment.
 **In the local development we can simply apply one kubernetes config file and then run the application**
 
-Application will use the same configuration file _ingres-service.yml_ for routing the traffic to our services in both environments:
- - For local development purposes
- - Google Cloud 
-
-**NOTE! Only the ingress-nginx installation process can vary on different platforms.**
+Application will use different configuration file _ingres-service.yml_ for routing the traffic to our services in both environments:
+ - [For local development purposes](k8s-dev/ingress-service.yml)
+ - [Google Cloud Config file](k8s-prod/ingress-service.yml)
 
 ## Local Development 
 
