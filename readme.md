@@ -100,3 +100,58 @@ and make sure that no Pod/Service object are runing by doing :
  
 ### Accessing Kubernetes Dashboard Locally
 To access the kubernetes dashboard make sure to follow the [the documentation in this file](k8s/dashboard/kubernetes-dashboard.md)
+
+### Production
+At this point we need to go in the [Google Cloud Platform](https://console.cloud.google.com/) create a project and inside of that project we need to create kubernetes clusters.
+
+By creating that project GCP will also provide us **project id** that is going to get used in the pipeline environment(github action).
+Not only we need to create the clusters, but we also need a way to access the environment that those clusters
+are running through our pipeline environment. In google cloud we can do that by creating a **Secret Account** and give it the necessary permissions which
+will let us access the Google cloud environment. 
+
+
+#### Production configuration
+ For the production purposes we need to ssh into the google cloud environment and manually create our secret key for the postgresql just like we do for the local development. 
+ In order to do that we need to go to: https://console.cloud.google.com/ and then press Activate Shell in the top right corner and configure the shell to access the right environment where our clusters upp and running.
+
+If we do not see the pods when running the *kubectl get pods* and see the following error, that is because we need to configure google cloud to point to our project inside of that(since this doesnt come out of the box):
+```
+    The connection to the server localhost:8080 was refused - did you specify the right host or port?
+```
+So, that's why we need to configure the environment and that can be done by setting up the project id:
+```
+     gcloud config set project <project-id>
+```
+Settings up the zone:
+```
+    gcloud config set compute/zone <location> (Can be found under Kubernetes Cluster dashboard on the cluster that you have created eg. europe-north1-a under the location column)
+```
+Getting the credentials for the cluster that you create:
+```
+    gcloud container clusters get-credentials <cluster-name>
+```
+And now, after the configuration of gcloud inside of the google cloud environment we can create our secret by hitting the command:
+```
+     kubectl create secret generic pgpassword --from-literal PGPASSWORD=<your-secret-postgres-password>
+```
+
+
+Since for our local development we were using ingress-service.yml as an Ingress Controller, we kind of need to do the same thing for the Google Cloud Provider as well.
+So, how do we install the ingress-controller in our production environment(GCP). 
+Well, there are multiple ways to install the NGINX ingress controller but we will be using [Helm - The package manager for Kubernetes](https://helm.sh/):
+
+[Check the documentation if you want to use different installation alternatives](https://kubernetes.github.io/ingress-nginx/deploy/)
+
+### Steps to install ingress-controller with Helm in the Google Cloud
+
+In your Google Cloud Console run the following command to install helm:
+```
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    chmod 700 get_helm.sh 
+    ./get_helm.sh
+```
+Then we install the Ingress-controller:
+```
+    helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+    helm install my-release ingress-nginx/ingress-nginx
+```
